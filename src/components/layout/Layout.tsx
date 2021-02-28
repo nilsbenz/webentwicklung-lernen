@@ -10,10 +10,10 @@ const Layout: React.FC<Props> = ({ maxWidth = 'lg', children }) => {
 
   switch (maxWidth) {
     case 'sm':
-      maxWidthClassName = 'max-w-5xl';
+      maxWidthClassName = 'max-w-2xl';
       break;
     case 'md':
-      maxWidthClassName = 'max-w-6xl';
+      maxWidthClassName = 'max-w-5xl';
       break;
     case 'lg':
       maxWidthClassName = 'max-w-7xl';

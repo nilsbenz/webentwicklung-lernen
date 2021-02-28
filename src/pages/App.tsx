@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Footer from '../components/footer/Footer';
-import About from './courses/html/CourseHTML';
+import HTMLBasics from './courses/html/chapters/HTMLBasics';
+import CourseHTML from './courses/html/CourseHTML';
 import Home from './home/Home';
 
 const App = () => {
@@ -11,8 +12,11 @@ const App = () => {
         <div className="flex min-h-screen flex-col justify-between">
           <div>
             <Switch>
+              <Route path="/courses/html/basics">
+                <HTMLBasics />
+              </Route>
               <Route path="/courses/html">
-                <About />
+                <CourseHTML />
               </Route>
               <Route path="/">
                 <Home />
