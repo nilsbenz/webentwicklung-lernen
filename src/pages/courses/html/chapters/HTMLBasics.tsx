@@ -17,7 +17,7 @@ const HTMLBasics: React.FC = () => {
             Was ist HTML?
           </Typography>
         </LayoutCentered>
-        <Editor value={code} setValue={setCode} saveManually />
+        <Editor value={code} setValue={setCode} />
       </Layout>
     </>
   );

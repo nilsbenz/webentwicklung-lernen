@@ -1,23 +1,60 @@
 import AceEditor from 'react-ace';
 import React, { useEffect, useState } from 'react';
+import { Resizable, ResizeCallback } from 're-resizable';
 import 'brace/mode/html';
 import 'brace/theme/monokai';
 
 interface Props {
   value: string;
   setValue: (value: string) => void;
-  height?: string;
+  height?: number;
   saveManually?: boolean;
 }
 
 const Editor: React.FC<Props> = ({
   value,
   setValue,
-  height = '400px',
+  height = 400,
   saveManually = false,
 }) => {
   const [code, setCode] = useState<string>();
   const [save, setSave] = useState<boolean>(true);
+  const [resizing, setResizing] = useState<boolean>(false);
+  const [resizingHeight, setResizingHeight] = useState<number>(
+    Math.max(height, 150)
+  );
+  const [prevHeight, setPrevHeight] = useState<number>(Math.max(height, 150));
+
+  const resizableSize = {
+    width: '100%',
+    height: resizingHeight,
+  };
+  const enabledResize = {
+    top: false,
+    right: false,
+    bottom: true,
+    left: false,
+    topRight: false,
+    bottomRight: false,
+    bottomLeft: false,
+    topLeft: false,
+  };
+
+  const handleResizeStart = () => setResizing(true);
+
+  const handleResize: ResizeCallback = (_event, _direction, _ref, delta) => {
+    setResizingHeight(Math.max(prevHeight + delta.height, 150));
+  };
+
+  const handleResizeStop: ResizeCallback = (
+    _event,
+    _direction,
+    _ref,
+    delta
+  ) => {
+    setPrevHeight(Math.max(prevHeight + delta.height, 150));
+    setResizing(false);
+  };
 
   const toggleSave = (): void => {
     setSave(true);
@@ -31,63 +68,73 @@ const Editor: React.FC<Props> = ({
   }, [save]);
 
   return (
-    <div
-      className="flex rounded border-gray-900 border-2"
-      style={{ height: `calc(${height} + 4px)` }}
+    <Resizable
+      size={resizableSize}
+      onResizeStart={handleResizeStart}
+      onResize={handleResize}
+      onResizeStop={handleResizeStop}
+      enable={enabledResize}
     >
-      <AceEditor
-        onChange={setValue}
-        value={value}
-        name="editor"
-        editorProps={{ $blockScrolling: true }}
-        mode="html"
-        theme="monokai"
-        highlightActiveLine={true}
-        setOptions={{
-          highlightActiveLine: true,
-          highlightSelectedWord: true,
-          readOnly: false,
-          displayIndentGuides: true,
-          showPrintMargin: false,
-          printMarginColumn: 80,
-          showGutter: false,
-          fontSize: 12,
-          fontFamily: undefined,
-          useSoftTabs: true,
-          tabSize: 2,
-          wrap: false,
+      <div
+        className="flex rounded border-gray-900 border-2"
+        style={{
+          height: `calc(${resizing ? resizingHeight : prevHeight} + 4px)`,
         }}
-        onLoad={(editor) => {
-          editor.renderer.setScrollMargin(20, 20, 0, 0);
-          editor.renderer.setPadding(20);
-        }}
-        commands={[
-          {
-            name: 'saveRequestForLater',
-            bindKey: { win: 'Ctrl-s', mac: 'Command-s' },
-            exec: toggleSave,
-          },
-        ]}
-        className="font-mono"
-        height={height}
-        width="50%"
-      />
-      <div className="w-1/2 flex flex-col">
-        {saveManually && code !== value && (
-          <div
-            className="p-2 bg-primary text-center text-white cursor-pointer text-sm"
-            onClick={toggleSave}
-          >
-            Änderungen übernehmen (Ctrl + S)
-          </div>
-        )}
-        <iframe
-          srcDoc={saveManually ? code : value}
-          width="100%"
-          className="flex-grow"
+      >
+        <AceEditor
+          onChange={setValue}
+          value={value}
+          name="editor"
+          editorProps={{ $blockScrolling: true }}
+          mode="html"
+          theme="monokai"
+          highlightActiveLine={true}
+          setOptions={{
+            highlightActiveLine: true,
+            highlightSelectedWord: true,
+            readOnly: false,
+            displayIndentGuides: true,
+            showPrintMargin: false,
+            printMarginColumn: 80,
+            showGutter: false,
+            fontSize: 12,
+            fontFamily: undefined,
+            useSoftTabs: true,
+            tabSize: 2,
+            wrap: false,
+          }}
+          onLoad={(editor) => {
+            editor.renderer.setScrollMargin(20, 20, 0, 0);
+            editor.renderer.setPadding(20);
+          }}
+          commands={[
+            {
+              name: 'saveRequestForLater',
+              bindKey: { win: 'Ctrl-s', mac: 'Command-s' },
+              exec: toggleSave,
+            },
+          ]}
+          className="font-mono"
+          height={`${resizing ? resizingHeight : prevHeight}px`}
+          width="50%"
         />
+        <div className="w-1/2 flex flex-col">
+          {saveManually && code !== value && (
+            <div
+              className="p-2 bg-primary text-center text-white cursor-pointer text-sm"
+              onClick={toggleSave}
+            >
+              Änderungen übernehmen (Ctrl + S)
+            </div>
+          )}
+          <iframe
+            srcDoc={saveManually ? code : value}
+            width="100%"
+            className="flex-grow"
+          />
+        </div>
       </div>
-    </div>
+    </Resizable>
   );
 };
 
