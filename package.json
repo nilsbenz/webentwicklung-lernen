@@ -4,7 +4,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "serve": "vite preview"
+    "serve": "vite preview",
+    "deploy:hosting": "firebase deploy --only hosting:ksh-informatik"
   },
   "dependencies": {
     "ace": "^1.3.0",

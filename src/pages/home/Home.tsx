@@ -17,10 +17,15 @@ const Home: React.FC = () => {
 
   return (
     <Layout>
-      <div className="flex flex-col-reverse md:flex-row gap-8 md:gap-2 pb-24 md:py-48">
-        <div className="flex flex-col justify-center gap-10 md:gap-14 lg:gap-20  items-start md:w-1/2">
-          <Typography variant="heading">Webentwicklung lernen</Typography>
-          <Typography variant="body-secondary">
+      <div className="flex flex-col-reverse md:flex-row pb-24 md:py-48">
+        <div className="flex flex-col justify-center items-start md:w-1/2">
+          <Typography variant="heading" className="mt-4 md:mt-0">
+            Webentwicklung lernen
+          </Typography>
+          <Typography
+            variant="body-secondary"
+            className="my-10 md:my-14 lg:my-20"
+          >
             Die Grundlagen der modernen Webentwicklung einfach und
             anwendungsbasiert erklärt. Entdecke Technolgien, welche als
             Grundbausteine angesagter Websites grossen Einfluss auf eine gesamte
