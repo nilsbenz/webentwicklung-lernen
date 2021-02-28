@@ -36,7 +36,7 @@ const Home: React.FC = () => {
         </div>
       </div>
       <div ref={coursesRef}>
-        <Typography variant="title" className="mb-12">
+        <Typography variant="title" className="mb-8 md:mb-12">
           Kurse
         </Typography>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
