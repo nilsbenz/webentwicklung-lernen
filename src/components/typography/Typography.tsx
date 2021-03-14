@@ -2,7 +2,7 @@ import React from 'react';
 
 interface Props {
   variant?: 'body' | 'body-secondary' | 'heading' | 'title' | 'subtitle';
-  children: JSX.Element | string;
+  children: JSX.Element | string | (JSX.Element | string)[];
 }
 
 const Typography: React.FC<Props & React.HTMLAttributes<any>> = ({
